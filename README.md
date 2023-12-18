@@ -1,7 +1,7 @@
 # EasyCFG
 
 A lightweight package around `pflag` and `viper` providing a easy way to configure program options and tie it together
-with a settings file and environment variables. Additional support for GPG encrypted values has been added.
+with environment variables. Additional support for GPG encrypted values has been added.
 
 ### Usage
 
@@ -15,11 +15,10 @@ func main() {
 	var(
 		port int
 		debug bool
-		settingsFile string
 		serviceAccount string
 	)
 	
-	easycfg.InitConfig("my-cool-service", settingsFile, 
+	easycfg.InitConfig("my-cool-service", 
 		easycfg.WithIntVar(&port, "port", 8080, "server bind port"),
 		easycfg.WithBoolVar(&debug, "debug", false, "set debug logging"),
 		easycfg.WithGPGEncryptedValueFromFile(&serviceAccount, "service-account", "", "service account")
