@@ -60,9 +60,9 @@ func WithGPGEncryptedValueFromFile(opt *string, name string, defaultValue string
 }
 
 // InitConfig initializes the program's configuration.
-func InitConfig(serviceName string, settingsFile string, opts ...ProgramOpts) error {
+func InitConfig(serviceName string, opts ...ProgramOpts) error {
 
-	if len(serviceName) == 0 || len(settingsFile) == 0 {
+	if len(serviceName) == 0 {
 		return fmt.Errorf("required parameter not set")
 	}
 
@@ -89,9 +89,6 @@ func InitConfig(serviceName string, settingsFile string, opts ...ProgramOpts) er
 		opt()
 	}
 
-	viper.SetEnvPrefix(serviceName)
-	viper.SetConfigFile(settingsFile)
-	viper.SetConfigType("yaml")
 	// todo: Need to bind options to settings file entries
 	standard.VisitAll(func(flag *pflag.Flag) {
 		bindEnv(flag)
@@ -102,6 +99,7 @@ func InitConfig(serviceName string, settingsFile string, opts ...ProgramOpts) er
 
 	pflag.Parse()
 
+	viper.SetEnvPrefix(serviceName)
 	// todo: handle GPG encrypted information and store unencrypted values...
 	// variables pointing to gpg encrypted assets are in the encrypted FlagSet.
 	encrypted.VisitAll(func(flag *pflag.Flag) {
